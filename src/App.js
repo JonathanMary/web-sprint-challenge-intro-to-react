@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { BASE_URL } from './constants'
 import styled from 'styled-components';
 //axios for API call
 import axios from '../node_modules/axios';
@@ -12,8 +13,10 @@ const App = () => {
   // the state properties here.
   const [data, setData] = useState([]);
 
+  console.log(BASE_URL);
+
   useEffect(()=>{
-    axios.get(`https://rickandmortyapi.com/api/character`)
+    axios.get(`${BASE_URL}/api/character`)
          .then(res => {
            setData(res.data.results);
          })
