@@ -10,44 +10,14 @@ import Character from './components/Character';
 const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
-  const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-  //const [isBusy, setIsBusy] = useState(true);
-  
-  // Fetch characters from the API in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
-  
-  useEffect(() => {
-    axios.get(`https://pokeapi.co/api/v2/pokemon/`)
-    .then(call => {
-      //call.data.results returns a list of 20 Pokemons individual url.
-      //will push the urls into getList and return it
-      //console.log(call.data.results);
-         let getList = [];
-         (call.data.results).forEach(pok => {
-            getList.push(pok.url)
-         });
-         //console.log("Should be a list of links to pokemons", getList)
-         return getList;
+  useEffect(()=>{
+    axios.get(`https://rickandmortyapi.com/api/character`)
+         .then(res => {
+           setData(res.data.results);
          })
-         .then(urlList => {
-           //pokedex will contain list of abilities, name etc of called pokemons
-           let pokedex = [];
-           //console.log("Should return the same than getList", urlList);
-           urlList.forEach(url => {
-             //console.log("Should return link to each pokemon", url);
-             axios.get(`${url}`)
-                  .then(result => pokedex.push(result.data))
-                  .catch(err => console.log(err))
-           })
-           //console.log("pokedex", pokedex);
-
-           setList(pokedex);
-          })
-          .catch(err => console.log(err))
-    setLoading(false);
+         .catch(err => console.log(err))
   }, []);
 
 
@@ -56,16 +26,13 @@ const App = () => {
     <div className="App">
       <h1 className="Header">Characters</h1>
       <Card>
-        {loading && <p>Loading</p>}
-        {!loading && 
-        <>
         {
-          list.map(pokemon => {
-            console.log("inside map", pokemon.name);
-            return <Character key={pokemon.name} name={pokemon.name} />;
+          data.map(char => {
+            console.log(char);
+            return <Character key={char.id} name={char.name} species={char.species} image={char.image} gender={char.gender} origin={char.origin.name} />
           })
+
         }
-        </>}
       </Card>
     </div>
   );
@@ -79,9 +46,16 @@ const Card = styled.div`
   flex-flow: row wrap;
   justify-content: space-around;
   .card{
-    background-color: white;
+    background-color: darkgoldenrod;
     padding: 2vw;
     width: 16vw;
     margin: 2vw;
+    min-width: 150px;
+    border-radius: 20%;
+  }
+  .picture>img{
+    width:12vw;
+    min-width: 100px;
+    border-radius: 20%;
   }
 `
