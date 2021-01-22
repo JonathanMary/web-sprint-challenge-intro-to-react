@@ -11,6 +11,7 @@ const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //const [isBusy, setIsBusy] = useState(true);
   
@@ -28,9 +29,8 @@ const App = () => {
          (call.data.results).forEach(pok => {
             getList.push(pok)
          });
-         setList(getList);
-         console.log(getList)
-         //return getList;
+         //console.log(getList)
+          setList(getList);
          })
          /*.then(urlList => {
            let pokedex = [];
@@ -43,8 +43,9 @@ const App = () => {
            console.log("pokedex", pokedex);
 
            setList(pokedex);
-         })*/
-         .catch(err => console.log(err))
+          })*/
+          .catch(err => console.log(err))
+    setLoading(false);
   }, []);
 
 
@@ -54,6 +55,7 @@ const App = () => {
       <h1 className="Header">Characters</h1>
       <Card>
       {
+        
         list.map(pokemon => {
           console.log("inside map", pokemon.name);
           return <Character key={pokemon.name} name={pokemon.name} />;
