@@ -27,23 +27,25 @@ const App = () => {
       //console.log(call.data.results);
          let getList = [];
          (call.data.results).forEach(pok => {
-            getList.push(pok)
+            getList.push(pok.url)
          });
-         //console.log(getList)
-          setList(getList);
+         //console.log("Should be a list of links to pokemons", getList)
+         return getList;
          })
-         /*.then(urlList => {
+         .then(urlList => {
+           //pokedex will contain list of abilities, name etc of called pokemons
            let pokedex = [];
-           //console.log(urlList);
+           //console.log("Should return the same than getList", urlList);
            urlList.forEach(url => {
+             //console.log("Should return link to each pokemon", url);
              axios.get(`${url}`)
                   .then(result => pokedex.push(result.data))
                   .catch(err => console.log(err))
            })
-           console.log("pokedex", pokedex);
+           //console.log("pokedex", pokedex);
 
            setList(pokedex);
-          })*/
+          })
           .catch(err => console.log(err))
     setLoading(false);
   }, []);
@@ -54,13 +56,16 @@ const App = () => {
     <div className="App">
       <h1 className="Header">Characters</h1>
       <Card>
-      {
-        
-        list.map(pokemon => {
-          console.log("inside map", pokemon.name);
-          return <Character key={pokemon.name} name={pokemon.name} />;
-        })
-      }
+        {loading && <p>Loading</p>}
+        {!loading && 
+        <>
+        {
+          list.map(pokemon => {
+            console.log("inside map", pokemon.name);
+            return <Character key={pokemon.name} name={pokemon.name} />;
+          })
+        }
+        </>}
       </Card>
     </div>
   );
