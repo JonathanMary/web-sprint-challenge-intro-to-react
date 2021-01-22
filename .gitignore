@@ -117,4 +117,4 @@ dist
 
 .DS_Store
 
-./constants
+src/constants
